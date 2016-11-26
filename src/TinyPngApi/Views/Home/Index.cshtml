@@ -4,5 +4,38 @@
     <h2>@ViewBag.CountRemain</h2>
     <p> @Html.ActionLink("Sync Compress Remain", "SyncCompressRemain", "Home", new { area = "" }, null) </p>
 
+
+    @using (Ajax.BeginForm("Compress", "TinyPng", new AjaxOptions { HttpMethod = "POST" }, new { id = "compress" }))
+    {
+        <input type="hidden" id="base64" name="base64" value="iVBORw0KGgoAAAANSUhEUgAAAGQAAAArCAQAAAAk5eVmAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAAEUQAABFEATb0iuIAAAAJdnBBZwAAAGQAAAArAPDHDSwAAAWvSURBVGje1ZltiJRVFMd/95lnZ9Yd3VlfsDR8wcLUUkuLIgglSQuMILKoJEqiLKmoUJbEiF6USog+FBQZRH0oUPNTUJBsYeWWoa1apm7Fqqu4s6677rzt7Dz/PvjszDx3ZnQ3ZMc958twznPuOf97zj3nMhcGSULoHq1RjQZrcjmSkKP71KYTWjicQISMxsq9RD6FXD2hDvVqg6LDB0QI3a0mLROXwKtQrdapR2f0zPAWlhBarX7t1pSL+TUFIxzcst9EaeR5ulnHF5diY4ZIUT5kBe/TSN8FvsoWA7mN9YTKbMpYFhCmnRZUAD5s5HEV80nyC+kK3g2drC/OwThus3LiUUsYEmRhMpOHHUQ+0midu5g+MmWhOLQTLc5IA1cHPsxxPa8xvYk36apCKgokVvE05jfW0V02kCyHK5oKLdRuT19puqg6T9YPUp9eGGL3EkJ36s9+faKJVQdxnhfrlNSuRUOAIuRohdrS2qxY1QEMsNFaZaUmTRokEKEaPamOc3pZo6oefjHHtE3ytHlQs0xolBrVE9dq1VQ9dJvn6bDUrfsvWl5C9XpH6WN6QE7Vwy7Hjyoh7dfMC0ARQhO1RdlDWlr1gCtxRB9I0mcVb3xCaJq2y9ujW6oe7oV4qpqljNaUzYkQmqOd0neaU/VQL8Z3KS616dYSKELoVu3JaZumVj3Mi7OjV9QvfaMJxUCMwGEp73kzv6SR0zhDmZxVITGOT1nisYlNpPCMD8RhJW9zRZYWekYADACPKVwDveziWY76ly89pg6NVOrRgwPj0eUfupjwK21Vvd8OncQ0Fo4xG9nr33yF3vW0Usj1OSTjHyuTlw1oCgcuqClYhIZs4VpcGMWhEv8mv5qj2WqV4rphICPQBzmg38fqsohJCMMh9gZ2oZ7F1AEeu2kLaG5kFsJwkl35dQDGsohaIMePtBfJDTdxDcJwjJ/wAmvN4GYMcI4mEgFNmDuYgIADHKCNk8zIksqnSG95eqiovU1UiyRP0la5gcZ3u3rkyZP0YkDuaqtv0WJd+5cpKU+ePD0VkEf0tW/RrAarvb7qa+JaYGmmqdXXfSwU1S6pXdcWMmKRQ5jz/0qErXPj4vqSSEBuiiyCfa+GkG8RtnxEKliQ19SUBBfK+4lg05D67eXcDspkJEsHk8nh0mlVb4I49QjD2YDco5Ne+gnRQTag6aWTOoToDshzxH2LeOBMAXRxjhyGznz5D1CGDurxcOkcDJAuVtHgH91cQLOP5UQQotUKawMf+AC7Appm7iaM8DgakPexls0IQyfnLP9b2AkYUvxlaU7xMGP8FjEIIB5HKqQvQ0sFzXGOl5Wn+L2CRZvV9wrUWWa/BzbsEJVoZNxJBkFlMhJmHqMRcCTQ+yHGXFwgS0ugIAyzmYgwnLCyOY7rcDBkaAnMBIfrGI8wtPG35X860xGGLg5YpV3LfEYhxCFO22GXzpFZalVSCaX1utXHH1SPEkrorJYH5DE1Ka2EMtquSEDzuHqVUEJxLQnIJ6jZt/jcmlVGHymjhFLap0mW/5vUrqQSSumlwcyRCDFGAVBvaeoYA4BHNCAPEfM7e8yq1dH+l66/YqEQBizqraZuiBEmDMSoKYms3l9ndEnUZc7IyHyRKjtHUvQjQiQtTZoMDpAlHZB7JPHI4ZK0Jk/anysZMgF5rsgiuHEiiejHIVkyYfpIEUE4JROmLJC/eYR6/2oWpG+51z/svwTkPTznXzP/tQLewTFCQIbmgPwMq/320GqFKzaxFTDESw70QR6gDlCZpu4DqSWSr0jlw3SsWkzzvf8rZGn+4CAAxpInaKpgsd/PhCmp9+P+hDHUWhrxcz6yKNHAY4573qSRVZf1TaochZhjA4GZ3TNT/2u1apJhfGH3B87IG+yo8IJ4+VIdWwqvaC7QwymO5v+NGCEkqGEjDfmOIHSl5qphZE6PAv0HOjAXfU/i+acAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTMtMDItMTFUMjM6MTM6NDYtMDg6MDCcEZI+AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDEzLTAyLTExVDIzOjEzOjQ2LTA4OjAw7UwqggAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAAVdEVYdFRpdGxlAEV0aGVybmV0IFN3aXRjaASOWkwAAAAASUVORK5CYII=" />
+        <div class='text-right' style='padding-right: 10px; padding-bottom: 10px;'>
+            <a class='btn btn-success' href="#" id="submit-all">
+                ورود حواله به انبار&nbsp;<span class='glyphicon glyphicon-circle-arrow-right'></span>
+            </a>
+        </div>
+
+    }
+
 </div>
- 
+
+
+
+
+@section scripts
+{
+    <script>
+
+        $("#submit-all").click(function (parameters) {
+            var form = $("#compress");
+            var url = form.attr('action');
+            var formData = form.serialize();
+            $.post(url, formData, function (data) {
+                if (JSON.parse(data.errFlag)) {
+
+                }
+
+            });
+        });
+
+    </script>
+}

@@ -16,24 +16,24 @@ namespace TinyPngApi.Core
         internal static string ApiUrl = "https://api.tinify.com/shrink";
         public static int MaxCompressCount { get; } = 500;
         public List<TinifyApiKeyPair> ApiKeys { get; set; }
-        public string SourceImagePath { get; set; }
+        public byte[] SourceImageBytes { get; set; }
         public int RepeatCompressionNumber { get; set; }
-        public TinifyImage(string tinifyApiKey, string sourceImgPath) : this(tinifyApiKey, sourceImgPath, 1) { }
-        public TinifyImage(string tinifyApiKey, string sourceImgPath, int repeatCompressionNo)
+        public TinifyImage(string tinifyApiKey, byte[] sourceImageBytes) : this(tinifyApiKey, sourceImageBytes, 1) { }
+        public TinifyImage(string tinifyApiKey, byte[] sourceImageBytes, int repeatCompressionNo)
         {
             ApiKeys = new List<TinifyApiKeyPair>
             {
                 TinifyApiKeyPair.Create(tinifyApiKey, CompressRemainCountAsync(tinifyApiKey).Result)
             };
 
-            SourceImagePath = sourceImgPath;
+            SourceImageBytes = sourceImageBytes;
             RepeatCompressionNumber = repeatCompressionNo;
         }
-        public TinifyImage(List<TinifyApiKeyPair> tinifyApiKeys, string sourceImgPath) : this(tinifyApiKeys, sourceImgPath, 1) { }
-        public TinifyImage(List<TinifyApiKeyPair> tinifyApiKeys, string sourceImgPath, int repeatCompressionNo)
+        public TinifyImage(List<TinifyApiKeyPair> tinifyApiKeys, byte[] sourceImageBytes) : this(tinifyApiKeys, sourceImageBytes, 1) { }
+        public TinifyImage(List<TinifyApiKeyPair> tinifyApiKeys, byte[] sourceImageBytes, int repeatCompressionNo)
         {
             ApiKeys = tinifyApiKeys;
-            SourceImagePath = sourceImgPath;
+            SourceImageBytes = sourceImageBytes;
             RepeatCompressionNumber = repeatCompressionNo;
         }
 
@@ -44,9 +44,9 @@ namespace TinyPngApi.Core
             ProgressChanged?.Invoke(compressLevel, currentlevelimage, compressionCount);
         }
 
-        public async Task<byte[]> CompressAsync(CancellationTokenSource cts)
+        public async Task<byte[]> CompressAsync()
         {
-            var resImg = File.ReadAllBytes(SourceImagePath);
+            var resImg = SourceImageBytes;
             long lastCompressedSize = 0;
             //
             // Check if api keys have enough compress remain count
@@ -79,7 +79,7 @@ namespace TinyPngApi.Core
 
                         if (ApiKeys[0].CompressRemainCount <= 1) ApiKeys.RemoveAt(0);
 
-                        if (lastCompressedSize == resImg.LongLength || cts.IsCancellationRequested) goto EndOfCompress;
+                        if (lastCompressedSize == resImg.LongLength) goto EndOfCompress;
 
                         lastCompressedSize = resImg.LongLength;
                     } while (++repeatCount <= RepeatCompressionNumber && ApiKeys.Any());

@@ -13,7 +13,8 @@ namespace TinyPngApi.Controllers
         public async Task<ActionResult> Index()
         {
             var lstKeys = await TinifyHelperExtensions.GenerateTinifyApiKeysLocalAsync();
-            var tinify = new TinifyImage(lstKeys, "");
+            var bytes = new byte[1];
+            var tinify = new TinifyImage(lstKeys, bytes);
             ViewBag.Title = "Home Page";
             ViewBag.CountRemain = tinify.CompressRemainCount().ToString();
             return View();
@@ -23,7 +24,8 @@ namespace TinyPngApi.Controllers
         {
             var lstKeys = await TinifyHelperExtensions.GenerateTinifyApiKeysOnlineAsync();
             await lstKeys.SaveCompressRemainCountAsync();
-            var tinify = new TinifyImage(lstKeys, "");
+            var bytes = new byte[1];
+            var tinify = new TinifyImage(lstKeys, bytes);
             ViewBag.Title = "Home Page";
             ViewBag.CountRemain = tinify.CompressRemainCount().ToString();
             return View();
