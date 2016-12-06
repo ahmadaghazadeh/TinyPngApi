@@ -76,6 +76,7 @@ namespace TinyPngApi.Core
 
                         // call progress event to new compress level
                         OnProgressChanged(repeatCount, resImg, ApiKeys[0].CompressCount);
+                        await ApiKeys[0].SaveCompressRemainCountAsync();
 
                         if (ApiKeys[0].CompressRemainCount <= 1) ApiKeys.RemoveAt(0);
 
@@ -111,11 +112,11 @@ namespace TinyPngApi.Core
                 // and add the header to this object instance
                 // optional: add a formatter option to it as well
                 // synchronous request without the need for .ContinueWith() or await
-                HttpResponseMessage response = await client.PostAsync(TinifyImage.ApiUrl, body);
+                var response = await client.PostAsync(TinifyImage.ApiUrl, body);
                 var res = response.Headers.GetValues("Compression-Count").FirstOrDefault();
 
                 int count;
-                return Int32.TryParse(res, out count) ? count : 0;
+                return int.TryParse(res, out count) ? count : 0;
             }
         }
     }

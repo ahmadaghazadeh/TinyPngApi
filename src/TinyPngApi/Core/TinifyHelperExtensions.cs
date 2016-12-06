@@ -65,7 +65,7 @@ namespace TinyPngApi.Core
 
         public static async Task SaveCompressRemainCountAsync(this TinifyApiKeyPair apiKeyPair)
         {
-            Connections.TinyPng.SqlConn.Execute("UPDATE TinyPngKeys set CompressRemain = @CompressRemain WHERE ApiKey =@ApiKey",
+             Connections.TinyPng.SqlConn.Execute("UPDATE TinyPngKeys set CompressRemain = @CompressRemain WHERE ApiKey =@ApiKey",
                 new { CompressRemain = apiKeyPair.CompressCount , ApiKey = apiKeyPair.Key});
         }
 
